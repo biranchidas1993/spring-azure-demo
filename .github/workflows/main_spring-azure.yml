@@ -21,7 +21,7 @@ jobs:
       - name: Set up Java version
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '8'
           distribution: 'microsoft'
 
       - name: Build with Maven
@@ -36,28 +36,18 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
       
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_ED3F6420754844DCA7DDB7B0BC93F07E }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_93A7403A2D154B9DAD0CF564EA1653F1 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_DC80528992BA4A32A7169502194D21AC }}
-
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'spring-azure'
+          app-name: 'spring-azure-demo'
           slot-name: 'Production'
           package: '*.jar'
-          
+          publish-profile: ${{ secrets.__publishingprofilesecretname__ }}
