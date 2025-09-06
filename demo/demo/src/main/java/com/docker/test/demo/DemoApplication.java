@@ -15,7 +15,7 @@ public String getMessage() {
 }
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
-		System.out.print("check");
+		System.out.print("check biranchi");
 	}
 
 }
